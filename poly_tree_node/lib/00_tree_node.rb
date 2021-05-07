@@ -1,7 +1,4 @@
 require 'byebug'
-
-#Wass g
-
 class PolyTreeNode
     attr_reader :parent, :children, :value
     attr_writer :parent
