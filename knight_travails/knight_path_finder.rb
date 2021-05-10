@@ -7,7 +7,7 @@ class KnightPathFinder
     def self.valid_moves(pos) # [0,1]
         valid = []
         row, col = pos 
-        a = [-3,3]
+        a = [-2,2]
         b = [1,-1]
 
         (0...2).each do |i|
@@ -55,25 +55,43 @@ class KnightPathFinder
       arr.each do |pos|
         next_node = PolyTreeNode.new(pos)
         queue << next_node
-        current_node.children << next_node # root_node.children == [node with a value of [1,3], node with a value of [3,1]]
+        # current_node.children << next_node # root_node.children == [node with a value of [1,3], node with a value of [3,1]]
+        current_node.add_child(next_node)
       end
     
     end
-    
   end
+
+  def find_path(end_pos)
+    trace_path_back(@root_node.bfs(end_pos))
+  end
+
+  def trace_path_back(node)
+    path = [node.value] 
+
+    next_node = node.parent
+      until next_node == nil
+        path << next_node.value
+        next_node = next_node.parent
+      end
+
+    path.reverse
+  end
+
 end
 
 knight = KnightPathFinder.new([0,0])
 
 
-queue = [knight.root_node]
-until queue.empty?
-  temp = queue.shift
-  print "Children for #{temp.value}: "
-  temp.children.each do |child|
-    print "#{child.value}"
-    queue << child
-  end
-  print "\n"
-end
+# queue = [knight.root_node]
+# until queue.empty?
+#   temp = queue.shift
+#   print "Children for #{temp.value}: "
+#   temp.children.each do |child|
+#     print "#{child.value}"
+#     queue << child
+#   end
+#   print "\n"
+# end
 # print KnightPathFinder.valid_moves([0,0])
+print knight.find_path([2,4])
